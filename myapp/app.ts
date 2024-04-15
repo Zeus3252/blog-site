@@ -5,13 +5,17 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import router from "./routes";
+const cors = require("cors");
+const compression = require("compression");
 
 const app = express();
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
 
 app.use("/", router);
 

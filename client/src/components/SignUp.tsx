@@ -7,18 +7,13 @@ const SignUp = () => {
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const formdata = new FormData();
-      formdata.append("username", username);
-      formdata.append("password", password);
-
       const response = await fetch("http://localhost:3000/signup", {
         method: "POST",
-        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Headers": "*",
         },
-        body: JSON.stringify({ formdata }),
+        body: JSON.stringify({ username, password }),
       });
 
       const result = await response.json();
