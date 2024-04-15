@@ -1,11 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ErrnoException } from "./types/definitions";
-const prisma = require("http-errors");
-const createError = require("http-errors");
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const indexRouter = require("./routes/index");
+import createError from "http-errors";
+import express from "express";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import router from "./routes";
 
 const app = express();
 
@@ -14,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/", indexRouter);
+app.use("/", router);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -33,7 +32,7 @@ app.use(function (
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+  res.status(err.status ?? 500);
   res.json(err);
 });
 

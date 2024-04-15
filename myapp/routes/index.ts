@@ -1,15 +1,11 @@
-import {
-  indexRouteHandler,
-  userRouteHandler,
-} from "../controllers/indexController";
+import { userRouteHandler } from "../controllers/indexController";
+import { authController } from "../controllers/authController";
+import express from "express";
 
-var express = require("express");
-var router = express.Router();
+const router = express.Router();
 
-/* GET User. */
 router.get("/users/", userRouteHandler);
 
-/* POST Create User. */
-router.post("/", indexRouteHandler);
+router.post("/signup", authController);
 
 export default router;

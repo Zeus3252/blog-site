@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
-function App() {
-  const [homepage, setHomePage] = useState("");
+import NavBar from "./components/NavBar";
+import { Routes, Route } from "react-router-dom";
+import SignUp from "./components/SignUp";
 
-  useEffect(() => {
-    fetch("/")
-      .then((response) => response.json())
-      .then((data) => setHomePage(JSON.stringify(data)))
-      .catch((error) => setHomePage(`Error: ${error.toString()}`));
-  }, []);
-  console.log(homepage);
-  return <div>{homepage}</div>;
+function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<NavBar />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
