@@ -133,3 +133,7 @@ table {
   justify-content: space-evenly;
   font-size: large;
 }
+
+.form-error {
+  color: red;
+}

@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <div className="nav-bar">
       <p>Home</p>
-      <p>Login</p>
+      <p onClick={() => navigate("/login")}>Login</p>
       <p onClick={() => navigate("/signup")}>Signup</p>
     </div>
   );

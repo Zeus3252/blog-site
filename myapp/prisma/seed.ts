@@ -3,7 +3,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
-  // Seed Posts
   const post1 = await prisma.post.create({
     data: {
       title: "First Post",

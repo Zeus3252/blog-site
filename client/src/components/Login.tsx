@@ -1,36 +1,37 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-const SignUp = () => {
+
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      if (password != confirmPassword)
-        setError("Password and confirm password do not match");
-      e.preventDefault();
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Headers": "*",
         },
         body: JSON.stringify({ username, password }),
       });
 
-      const result = await response.json();
-      navigate("/home");
+      if (!response.ok) {
+        const errorDetail = await response.text();
+        console.error("Response not OK:", errorDetail);
+        setError("Failed to log in");
+        return;
+      }
+
+      console.log("Login successful");
     } catch (e) {
-      console.error(e);
+      console.error("Error during fetch operation:", e);
+      setError("Could not log in. Please try again.");
     }
   };
-
   return (
     <div>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleLogin}>
         <label htmlFor="username" />
         <input
           type="text"
@@ -53,22 +54,11 @@ const SignUp = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <label htmlFor="confirm-password" />
-        <input
-          type="password"
-          name="confirmPassword"
-          id="confirm-password"
-          value={confirmPassword}
-          maxLength={15}
-          placeholder="please reenter your password"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Login</button>
       </form>
       {error && <p className="form-error">{error}</p>}
     </div>
   );
 };
 
-export default SignUp;
+export default Login;
