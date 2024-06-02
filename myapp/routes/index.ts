@@ -9,4 +9,9 @@ router.get("/users/", userRouteHandler);
 router.post("/signup", signUpHandler);
 
 router.post("/login", loginHandler);
+
+router.get("/home", (req, res) => {
+  res.send("Welcome to the home page!");
+});
+
 export default router;

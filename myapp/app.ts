@@ -7,11 +7,21 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import router from "./routes";
+import passport from "passport";
+import dotenv from "dotenv";
+
+dotenv.config();
+const SESSION_SECRET = process.env.SESSION_SECRET as string;
 const cors = require("cors");
 const compression = require("compression");
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -20,11 +30,19 @@ app.use(compression());
 
 app.use(
   session({
-    secret: "your-secret-key",
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+    },
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 setupPassport();
 

@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,26 +15,28 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
-
       if (!response.ok) {
         const errorDetail = await response.text();
         console.error("Response not OK:", errorDetail);
-        setError("Failed to log in");
+        setError("Failed to log in: " + errorDetail);
         return;
       }
 
       console.log("Login successful");
+      navigate("/home");
     } catch (e) {
       console.error("Error during fetch operation:", e);
       setError("Could not log in. Please try again.");
     }
   };
+
   return (
     <div>
       <form onSubmit={handleLogin}>
-        <label htmlFor="username" />
+        <label htmlFor="username">Username</label>
         <input
           type="text"
           name="username"
@@ -43,7 +47,7 @@ const Login = () => {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-        <label htmlFor="password" />
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
